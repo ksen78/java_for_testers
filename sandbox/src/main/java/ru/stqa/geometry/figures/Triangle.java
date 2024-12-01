@@ -2,16 +2,15 @@ package ru.stqa.geometry.figures;
 
 import static java.lang.Math.sqrt;
 
-public class Triangle {
+public record Triangle(double a, double b, double c) {
 
-    double a;
-    double b;
-    double c;
-
-    public Triangle(double a, double b, double c) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
+    public Triangle {
+        if (a < 0 || b < 0 || c < 0) {
+            throw new IllegalArgumentException("Triangle side should be non-negative");
+        }
+        if ( a + b < c || a + c < b || b + c < a ) {
+            throw new IllegalArgumentException("Triangle side inequality negative");
+        }
     }
 
     public static void printPerimeter(double a, double b, double c){
@@ -45,4 +44,5 @@ public class Triangle {
         var p = halfPerimeter(this.a, this.b, this.c);
         return sqrt(p * (p - this.a) * (p - this.b) * (p - this.c));
     }
+
 }

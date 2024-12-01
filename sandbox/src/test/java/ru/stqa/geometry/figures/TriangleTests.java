@@ -20,4 +20,24 @@ public class TriangleTests {
         result = a.Area();
         Assertions.assertEquals(10.928746497197197, result);
     }
+
+    @Test
+    void cannotCreateTriangleWithNegativeSide() {
+        try {
+            new Triangle(-5.0, 3.0, 3.0);
+            Assertions.fail();
+        } catch (IllegalArgumentException exception) {
+            //Ok
+        }
+    }
+
+    @Test
+    void cannotCreateTriangleWithSideInequality() {
+        try {
+            new Triangle(5, 6, 15);
+            Assertions.fail();
+        } catch (IllegalArgumentException exception) {
+            //Ok
+        }
+    }
 }
