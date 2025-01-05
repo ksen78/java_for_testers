@@ -53,7 +53,7 @@ public class GroupHelper extends HalperBase {
     }
 
     private void removeSelectedGroup() {
-        click(By.name("delete"));
+        click(By.name("Delete"));
     }
 
     private void returnToGroupsPage() {
