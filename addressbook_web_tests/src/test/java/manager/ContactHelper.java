@@ -4,13 +4,14 @@ import model.ContactData;
 import org.openqa.selenium.By;
 
 public class ContactHelper extends HalperBase {
+
     public ContactHelper(ApplicationManager manager) {
         super(manager);
     }
 
     public void openContactPage() {
-        if (!manager.isElementPresent(By.name("add new"))) {
-            click(By.linkText("add new"));
+        if (!manager.isElementPresent(By.name("add"))) {
+            click(By.linkText("home"));
         }
     }
 
@@ -39,7 +40,7 @@ public class ContactHelper extends HalperBase {
     }
 
     private void initContactCreation() {
-        click(By.name("home"));
+        click(By.linkText("add new"));
     }
 
     private void removeSelectedContact() {
@@ -62,4 +63,8 @@ public class ContactHelper extends HalperBase {
         click(By.name("selected[]"));
     }
 
+    public int getCount() {
+        openContactPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
 }
