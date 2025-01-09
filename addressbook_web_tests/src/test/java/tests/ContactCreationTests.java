@@ -16,13 +16,17 @@ public class ContactCreationTests extends TestBase{
         for (var firstname : List.of("", "firstname")) {
             for (var lastname : List.of("", "lastname")) {
                 for (var address : List.of("", "address")) {
-                    result.add(new ContactData(firstname, lastname, address));
+                    result.add(new ContactData()
+                            .withFirstname(firstname)
+                            .withLastname(lastname)
+                            .withAddress(address));
                 }
             }
         }
 
         for (int i = 0; i < 5; i++) {
-            result.add(new ContactData(randomString(i * 10), randomString(i * 10), randomString(i * 10)));
+            result.add(new ContactData()
+                    .withFirstname(randomString(i * 10)));
         }
         return result;
     }
@@ -40,7 +44,7 @@ public class ContactCreationTests extends TestBase{
 
     @Test
     public void canCreateContact() {
-        app.contact().createContact(new ContactData("firstname", "lastname", "address"));
+        app.contact().createContact(new ContactData("", "firstname", "lastname", "address"));
     }
 
     @Test
