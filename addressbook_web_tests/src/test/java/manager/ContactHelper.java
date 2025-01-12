@@ -32,7 +32,7 @@ public class ContactHelper extends HalperBase {
         returnToContactPage();
     }
 
-    public void modifyContact(ContactData contact) throws InterruptedException {
+    public void modifyContact(ContactData contact){
         openContactPage();
         initContactModification(contact);
         fillContactForm(contact);
@@ -65,6 +65,7 @@ public class ContactHelper extends HalperBase {
         type(By.name("lastname"), contact.lastname());
         type(By.name("firstname"), contact.firstname());
         type(By.name("address"), contact.address());
+        attach(By.name("photo"), contact.photo());
     }
 
     private void initContactModification(ContactData contact) {

@@ -3,16 +3,15 @@ package tests;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
 public class ContactModificationTests extends TestBase {
 
     @Test
-    void canModifyContact() throws InterruptedException {
+    void canModifyContact() {
         if (app.contact().getCount() == 0) {
-            app.contact().createContact(new ContactData("", "firstname", "lastname", "address"));
+            app.contact().createContact(new ContactData("", "firstname", "lastname", "address", "photo"));
         }
         var oldContact = app.contact().getList();
         var rnd = new Random();

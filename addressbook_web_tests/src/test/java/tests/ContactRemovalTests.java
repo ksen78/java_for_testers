@@ -10,9 +10,9 @@ import java.util.Random;
 public class ContactRemovalTests extends TestBase{
 
     @Test
-    public void canRemoveContact() {
+    public void canRemoveContact(){
     if (app.contact().getCount() == 0) {
-        app.contact().createContact(new ContactData("", "contact firstname", "contact lastname", "contact address"));
+        app.contact().createContact(new ContactData("", "contact firstname", "contact lastname", "contact address", ""));
     }
         var oldContact = app.contact().getList();
         System.out.println(oldContact);
