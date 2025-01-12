@@ -32,6 +32,14 @@ public class ContactHelper extends HalperBase {
         returnToContactPage();
     }
 
+    public void modifyContact(ContactData contact) throws InterruptedException {
+        openContactPage();
+        initContactModification(contact);
+        fillContactForm(contact);
+        submitContactModification();
+        returnToContactPage();
+    }
+
     private void submitContactCreation() {
         click(By.name("submit"));
     }
@@ -48,16 +56,23 @@ public class ContactHelper extends HalperBase {
         click(By.linkText("home"));
     }
 
-
-    private void fillContactForm(ContactData contact) {
-        type(By.name("firstname"), contact.firstname());
-        type(By.name("lastname"), contact.lastname());
-        type(By.name("address"), contact.address());
+    private void submitContactModification() {
+        click(By.name("update"));
     }
 
 
+    private void fillContactForm(ContactData contact) {
+        type(By.name("lastname"), contact.lastname());
+        type(By.name("firstname"), contact.firstname());
+        type(By.name("address"), contact.address());
+    }
+
+    private void initContactModification(ContactData contact) {
+        click(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id())));
+    }
+
     private void selectContact(ContactData contact) {
-        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+        click(By.cssSelector(String.format("input[id='%s']", contact.id())));
     }
 
     public int getCount() {
@@ -66,14 +81,16 @@ public class ContactHelper extends HalperBase {
     }
 
     public List<ContactData> getList() {
+        openContactPage();
         var contacts = new ArrayList<ContactData>();
         var trs = manager.driver.findElements(By.name("entry"));
         for (var tr : trs) {
             var td = tr.findElements(By.tagName("td"));
             var id = String.valueOf(Integer.parseInt(td.get(0).findElement(By.tagName("input")).getAttribute("value")));
-            var firstname = td.get(1).getText();
-            var lastname = td.get(2).getText();
-            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
+            var lastname = td.get(1).getText();
+            var firstname = td.get(2).getText();
+            var address = td.get(3).getText();
+            contacts.add(new ContactData().withId(id).withLastname(lastname).withFirstname(firstname).withAddress(address));
         }
         return contacts;
     }

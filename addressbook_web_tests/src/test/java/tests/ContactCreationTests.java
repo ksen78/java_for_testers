@@ -2,11 +2,11 @@ package tests;
 
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase{
@@ -33,22 +33,20 @@ public class ContactCreationTests extends TestBase{
 
     @ParameterizedTest
     @MethodSource("contactProvider")
-    public void canCreateMultipleContacts(ContactData contact) {
-        int contactCount = app.contact().getCount();
+    public void canCreateContact(ContactData contact) {
+        var oldContact = app.contact().getList();
+        app.contact().createContact(contact);
+        var newContact = app.contact().getList();
 
-            app.contact().createContact(contact);
+        Comparator<ContactData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newContact.sort(compareById);
 
-        int newContactCount = app.contact().getCount();
-        Assertions.assertEquals(contactCount + 1, newContactCount);
+        var expectedList = new ArrayList<>(oldContact);
+        expectedList.add(contact.withId(newContact.get(newContact.size() - 1).id()));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newContact, expectedList);
     }
 
-    @Test
-    public void canCreateContact() {
-        app.contact().createContact(new ContactData("", "firstname", "lastname", "address"));
-    }
-
-    @Test
-    public void canCreateContactWithNameOnly() {
-        app.contact().createContact(new ContactData().withFirstname("name"));
-    }
 }
