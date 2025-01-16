@@ -57,6 +57,21 @@ public class ContactHelper extends HalperBase {
         click(By.linkText("home page"));
     }
 
+    public void addContactInToGroup(ContactData contactForAddToGroup, GroupData groupData) {
+        returnToContactPage();
+        selectContact(contactForAddToGroup);
+        selectToGroup(groupData);
+        addToContact();
+    }
+
+    private void addToContact() {
+        manager.driver.findElement(By.name("add")).click();
+    }
+
+    private void selectToGroup(GroupData groupData) {
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(groupData.id());
+    }
+
     private void submitContactCreation() {
         click(By.name("submit"));
     }
@@ -89,6 +104,20 @@ public class ContactHelper extends HalperBase {
 
     private void selectContact(ContactData contact) {
         click(By.cssSelector(String.format("input[id='%s']", contact.id())));
+    }
+
+    public void selectGroupById(GroupData groupData) {
+        returnToContactPage();
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(groupData.id());
+    }
+
+    public void removeContactFromGroup(ContactData contactForDelete) {
+        selectContact(contactForDelete);
+        manager.driver.findElement(By.name("remove")).click();
+    }
+
+    public int getCount() {
+        return manager.driver.findElements(By.name("selected[]")).size();
     }
 
     public List<ContactData> getList() {
