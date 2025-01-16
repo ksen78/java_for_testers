@@ -1,7 +1,10 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,19 @@ public class ContactHelper extends HalperBase {
         returnToContactPage();
     }
 
+    public void createContact(ContactData contact, GroupData group) {
+        openContactPage();
+        initContactCreation();
+        fillContactForm(contact);
+        selectGroup(group);
+        submitContactCreation();
+        returnToContactPage();
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+    }
+
     public void removeContact(ContactData contact) {
         returnToContactPage();
         selectContact(contact);
@@ -32,12 +48,13 @@ public class ContactHelper extends HalperBase {
         returnToContactPage();
     }
 
-    public void modifyContact(ContactData contact){
-        openContactPage();
-        initContactModification(contact);
-        fillContactForm(contact);
-        submitContactModification();
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
         returnToContactPage();
+        selectContact(contact);
+        initContactModification(contact);
+        fillContactForm(modifiedContact);
+        updateContactModification();
+        click(By.linkText("home page"));
     }
 
     private void submitContactCreation() {
@@ -53,32 +70,25 @@ public class ContactHelper extends HalperBase {
     }
 
     private void returnToContactPage() {
-        click(By.linkText("home"));
+        manager.driver.findElement(By.linkText("home")).click();
     }
 
-    private void submitContactModification() {
-        click(By.name("update"));
-    }
-
+    private void updateContactModification() { click(By.xpath("//input[@name='update']"));    }
 
     private void fillContactForm(ContactData contact) {
         type(By.name("lastname"), contact.lastname());
         type(By.name("firstname"), contact.firstname());
         type(By.name("address"), contact.address());
-        attach(By.name("photo"), contact.photo());
+        //attach(By.name("photo"), contact.photo());
     }
 
     private void initContactModification(ContactData contact) {
-        click(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id())));
+        var edit = manager.driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id())));
+        edit.click();
     }
 
     private void selectContact(ContactData contact) {
         click(By.cssSelector(String.format("input[id='%s']", contact.id())));
-    }
-
-    public int getCount() {
-        openContactPage();
-        return manager.driver.findElements(By.name("selected[]")).size();
     }
 
     public List<ContactData> getList() {

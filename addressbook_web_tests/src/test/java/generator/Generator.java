@@ -76,7 +76,7 @@ public class Generator {
     }
 
     private void save(Object data) throws IOException {
-        if ( "json".equals(format)){
+        if ("json".equals(format)){
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             var json = mapper.writeValueAsString(data);
@@ -101,7 +101,7 @@ public class Generator {
                 throw new IOException("Ошибка при записи XML файла", e);
             }
         } else {
-            throw new IllegalArgumentException("Неизвестный формат данных" + format);
+            throw new IllegalArgumentException("Неизвестный формат данных " + format);
         }
     }
 }
