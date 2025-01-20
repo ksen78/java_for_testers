@@ -15,8 +15,8 @@ public class ContactAddToGroupTests extends TestBase{
         if (app.hbm().getGroupCount() == 0){
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
         }
-        if ( app.contact().getCount() == 0){
-            app.contact().createContact(new ContactData("", "firstname", "lastname", "address", ""));
+        if ( app.hbm().getContactCount() == 0){
+            app.hbm().createContact(new ContactData("", "firstname", "lastname", "address", ""));
         }
         var groupList = app.hbm().getGroupList();
 

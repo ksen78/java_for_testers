@@ -48,9 +48,9 @@ public class ContactCreationTests extends TestBase{
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void canCreateContact(ContactData contact){
-        var oldContact = app.contact().getList();
-        app.contact().createContact(contact.withPhoto(randomFile("src/test/resources/images")));
-        var newContact = app.contact().getList();
+        var oldContact = app.hbm().getContactList();
+        app.hbm().createContact(contact.withPhoto(randomFile("src/test/resources/images")));
+        var newContact = app.hbm().getContactList();
 
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
@@ -91,3 +91,4 @@ public class ContactCreationTests extends TestBase{
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
 }
+
