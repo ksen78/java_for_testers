@@ -37,7 +37,7 @@ public class ContactRemovalFromGroupTests extends TestBase{
         if (contactForDelete == null) {
             groupData = groupList.get(0);
             app.contact().createContact(
-                    new ContactData("", "firstname", "lastname", "address", ""),
+                    new ContactData("", "firstname", "lastname", "address", "", "", "", "", "", ""),
                     groupData
             );
             var contacts = app.hbm().getContactsInGroup(groupData);

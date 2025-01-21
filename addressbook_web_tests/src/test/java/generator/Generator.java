@@ -9,11 +9,14 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import common.CommonFunctions;
 import model.ContactData;
 import model.GroupData;
+import tests.TestBase;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Generator {
 
@@ -53,53 +56,46 @@ public class Generator {
         }
     }
 
+    private Object generateData (Supplier<Object> dataSupplier) {
+        return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList());
+        //Строка выше является аналогом цикла ниже, но написана в функциональном стиле
+//        var result = new ArrayList<Object>();
+//        for (int i = 0; i < count; i++){
+//            result.add(dataSupplier.get());
+//        }
+//        return result;
+    }
+
     private Object generateGroups() {
-        var result = new ArrayList<GroupData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new GroupData()
-                    .withName(CommonFunctions.randomString(i * 10))
-                    .withHeader(CommonFunctions.randomString(i * 10))
-                    .withFooter(CommonFunctions.randomString(i * 10)));
-        }
-        return result;
+        return generateData(() -> new GroupData()
+                .withName(CommonFunctions.randomString(10))
+                .withHeader(CommonFunctions.randomString(10))
+                .withFooter(CommonFunctions.randomString(10)));
     }
 
     private Object generateContacts() {
-        var result = new ArrayList<ContactData>();
-        for (int i = 0; i < count; i++) {
-            result.add(new ContactData()
-                    .withLastname(CommonFunctions.randomString(i * 10))
-                    .withFirstname(CommonFunctions.randomString(i * 10))
-                    .withAddress(CommonFunctions.randomString(i * 10)));
-        }
-        return result;
+        return generateData(() -> new ContactData()
+                .withFirstname(CommonFunctions.randomString(10))
+                .withLastname(CommonFunctions.randomString(10))
+                .withPhoto(TestBase.randomFile("src/test/resources/images/")));
     }
 
     private void save(Object data) throws IOException {
-        if ("json".equals(format)){
+        if ("json".equals(format)) {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             var json = mapper.writeValueAsString(data);
-
-            try (var writer = new FileWriter(output)){
+//          Ещё один вариант сохранения при помощи библиотеки jackson
+//          mapper.writeValue(new File(output), data);
+            try (var writer = new FileWriter(output)) {
                 writer.write(json);
-            } catch (IOException e) {
-                throw new IOException("Ошибка при записи JSON файла", e);
             }
         } else if ("yaml".equals(format)) {
             var mapper = new YAMLMapper();
-            try {
-                mapper.writeValue(new File(output), data);
-            } catch (IOException e) {
-                throw new IOException("Ошибка при записи YAML файла", e);
-            }
+            mapper.writeValue(new File(output), data);
         } else if ("xml".equals(format)) {
             var mapper = new XmlMapper();
-            try {
-                mapper.writeValue(new File(output), data);
-            } catch (IOException e) {
-                throw new IOException("Ошибка при записи XML файла", e);
-            }
+            mapper.writeValue(new File(output), data);
         } else {
             throw new IllegalArgumentException("Неизвестный формат данных " + format);
         }

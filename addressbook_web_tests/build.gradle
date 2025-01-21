@@ -1,5 +1,6 @@
 plugins {
-    id 'java'
+    id('java')
+    id("org.hidetake.swagger.generator") version "2.19.1"
 }
 
 group = 'org.example'
@@ -13,11 +14,11 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
-    implementation 'org.jcommander:jcommander:1.83'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    implementation 'org.jcommander:jcommander:2.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
-    implementation 'com.mysql:mysql-connector-j:8.1.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0'
+    implementation 'com.mysql:mysql-connector-j:9.1.0'
     implementation 'org.hibernate.orm:hibernate-core:6.3.0.CR1'
 }
 

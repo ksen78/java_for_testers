@@ -22,11 +22,19 @@ public class ContactRecord {
     @Column(name = "address")
     public String address;
 
+    public String home;
+
+    public String mobile;
+
+    public String work;
+
+    public String phone2;
+
+    public String email;
+
     @ManyToMany(mappedBy = "contacts")
     public List<GroupRecord> groups;
 
-    public ContactRecord() {
-    }
 
     public ContactRecord(int id, String firstname, String lastname, String address) {
         this.id = id;
