@@ -15,30 +15,28 @@ public class ContactAddToGroupTests extends TestBase{
         if (app.hbm().getGroupCount() == 0){
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
         }
-        if ( app.hbm().getContactCount() == 0){
-            app.hbm().createContact(new ContactData("", "firstname", "lastname", "address", "", "", "", "", "", ""));
+        if (app.contact().getCount() == 0) {
+            app.contact().createContact(new ContactData("", "contact firstname", "contact lastname", "", "", "", "", "", "", ""));
         }
-        var groupList = app.hbm().getGroupList();
 
-        ContactData contactForAddToGroup = null;
+        var groupList = app.hbm().getGroupList();
+        ContactData contactForAddToGroup;
         GroupData groupData = groupList.get(0);
-        var oldContactListInGroup = app.hbm().getContactsInGroup(groupData);
         var contactListNotInGroup = app.hbm().getContactsNotInGroup();
-        if  ((contactListNotInGroup != null) && (!contactListNotInGroup.isEmpty())) {
-            contactForAddToGroup = contactListNotInGroup.get(0);
-            app.contact().addContactInToGroup(contactForAddToGroup, groupData);
+
+        if (contactListNotInGroup.isEmpty()) {
+            app.contact().createContact(new ContactData("", "contact firstname", "contact lastname", "", "", "", "", "", "", ""));
         }
-        if (contactForAddToGroup == null) {
-            app.contact().createContact(
-                    new ContactData("", "firstname", "lastname", "address", "", "", "", "", "", ""),
-                    groupData
-            );
-            var contacts = app.hbm().getContactsInGroup(groupData);
-            contactForAddToGroup = contacts.get(contacts.size() - 1);
-        }
+
+        var oldContactListInGroup = app.hbm().getContactsInGroup(groupData);
+        contactListNotInGroup = app.hbm().getContactsNotInGroup();
+
+        contactForAddToGroup = contactListNotInGroup.get(0);
+        app.contact().addContactInToGroup(contactForAddToGroup, groupData);
+
         var expectedContactListInGroup = app.hbm().getContactsInGroup(groupData);
-        var newContactListInGroup = new ArrayList<>(oldContactListInGroup);
-        newContactListInGroup.add(contactForAddToGroup);
-        Assertions.assertEquals(Set.copyOf(expectedContactListInGroup), Set.copyOf(newContactListInGroup));
+        var ContactListInGroup = new ArrayList<>(oldContactListInGroup);
+        ContactListInGroup.add(contactForAddToGroup);
+        Assertions.assertEquals(Set.copyOf(expectedContactListInGroup), Set.copyOf(ContactListInGroup));
     }
 }

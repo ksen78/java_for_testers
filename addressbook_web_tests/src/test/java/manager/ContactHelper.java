@@ -118,7 +118,9 @@ public class ContactHelper extends HalperBase {
         new Select(manager.driver.findElement(By.name("group"))).selectByValue(groupData.id());
     }
 
-    public void removeContactFromGroup(ContactData contactForDelete) {
+    public void removeContactFromGroup(ContactData contactForDelete, GroupData groupData) {
+        returnToContactPage();
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(groupData.id());
         selectContact(contactForDelete);
         manager.driver.findElement(By.name("remove")).click();
     }
