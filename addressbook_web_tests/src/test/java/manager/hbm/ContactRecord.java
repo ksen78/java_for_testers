@@ -35,6 +35,8 @@ public class ContactRecord {
     @ManyToMany(mappedBy = "contacts")
     public List<GroupRecord> groups;
 
+    public ContactRecord(){
+    }
 
     public ContactRecord(int id, String firstname, String lastname, String address) {
         this.id = id;
