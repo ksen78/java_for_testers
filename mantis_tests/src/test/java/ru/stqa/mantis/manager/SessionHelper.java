@@ -15,7 +15,14 @@ public class SessionHelper extends HelperBase {
         click(By.cssSelector("input[type='submit']"));
     }
 
-    public boolean isLoggetIn() {
+    public boolean isLoggedIn() {
         return isElementPresent(By.cssSelector("span.user-info"));
+    }
+
+    public void confirmRegistration(String username, String password) {
+        type(By.id("realname"), username);
+        type(By.id("password"), password);
+        type(By.id("password-confirm"), password);
+        manager.driver().findElement(By.xpath("//button[@type='submit']")).click();
     }
 }
